@@ -8,3 +8,39 @@ export const getQuestionType = question => {
 
   return questionType;
 };
+
+export const arrWithPktToEgzam = [
+  // sum must be equal 74
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  1,
+  1,
+  1,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  2,
+  2,
+  2,
+  2,
+  1,
+  1
+];

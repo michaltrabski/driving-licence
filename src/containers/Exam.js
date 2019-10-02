@@ -4,7 +4,7 @@ import Media from "../components/Media";
 import Timer from "../components/Timer";
 import { getQuestionType } from "../functions/functions";
 
-const Exam = ({ questions }) => {
+const Exam = props => {
   const [currentQuestion, setcurrentQuestion] = useState(1);
   const [timer, setTimer] = useState({
     ready: false,
@@ -16,8 +16,9 @@ const Exam = ({ questions }) => {
 
   let [d15, d20, d50] = [15, 20, 50];
 
+  const { questions } = props;
   const question = questions[currentQuestion];
-  let { m, q, r } = question;
+  let { q, m, r } = question;
 
   useEffect(() => {
     let interval = null;

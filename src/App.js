@@ -5,23 +5,20 @@ import "./App.css";
 export const QuestionsContext = createContext();
 
 const App = () => {
-  console.log("App");
-
   const [questions, setQuestions] = useState([]);
-  const [examMode, setexamMode] = useState(true);
+  const [mode, setexamMode] = useState("makeExam");
 
   useEffect(() => {
-    console.log("App useEffect");
-
     setTimeout(() => {
-      const questions = questionsListFromAssets;
-      setQuestions(questions);
+      setQuestions(questionsListFromAssets);
     }, 1);
   }, [questions]);
 
   return (
-    <QuestionsContext.Provider value={questions}>
-      {examMode && <ExamWrapper questionsList={questions} />}
+    <QuestionsContext.Provider
+      value={{ questions: [...questions], setQuestions }}
+    >
+      {mode === "makeExam" && <ExamWrapper />}
     </QuestionsContext.Provider>
   );
 };

@@ -1,104 +1,60 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import { Button } from "react-bootstrap/";
 import _ from "lodash";
-import SpinnerToLosExam from "../components/spinners/SpinnerToLosExam";
 import Exam from "./Exam";
 import MasterContainer from "./../components/spinners/MasterContainer";
+import { arrWithPktToEgzam } from "../functions/functions";
+import { QuestionsContext } from "./../App";
 
-class ExamWrapper extends Component {
-  state = {
-    examQuestionsList: [],
-    examReady: false
-  };
+const ExamWrapper = props => {
+  const [examQuestionsList, setExamQuestionsList] = useState([]);
+  const { questions } = useContext(QuestionsContext);
 
-  getRandom32Questions = questionsList => {
+  const getRandom32Questions = questionsList => {
     let questionsListShuffled = _.shuffle(questionsList);
     let examQuestionsList = [];
-    const arr = [
-      3,
-      3,
-      3,
-      3,
-      3,
-      3,
-      3,
-      3,
-      3,
-      3,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      1,
-      1,
-      1,
-      1,
-      3,
-      3,
-      3,
-      3,
-      3,
-      3,
-      2,
-      2,
-      2,
-      2,
-      1,
-      1
-    ];
 
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arrWithPktToEgzam.length; i++) {
       let findQuestion = questionsListShuffled.findIndex(
         item =>
           (i < 20 &&
-            (item.pkt == arr[i] &&
+            (item.pkt == arrWithPktToEgzam[i] &&
               (item.r.toLowerCase() === "t" ||
                 item.r.toLowerCase() === "n"))) ||
           (i >= 20 &&
-            (item.pkt == arr[i] &&
+            (item.pkt == arrWithPktToEgzam[i] &&
               (item.r.toLowerCase() === "a" ||
                 item.r.toLowerCase() === "b" ||
                 item.r.toLowerCase() === "c")))
       );
-
       questionsListShuffled[findQuestion].nr = i + 1;
-
       examQuestionsList = [
         ...examQuestionsList,
         questionsListShuffled[findQuestion]
       ];
       questionsListShuffled = _.slice(questionsListShuffled, findQuestion + 1);
     }
-    this.setState({ examQuestionsList, examReady: true });
+    setExamQuestionsList(examQuestionsList);
   };
 
-  render() {
-    const { questionsList } = this.props;
-
-    return (
-      <MasterContainer>
-        {questionsList.length > 0 ? (
-          this.state.examReady ? (
-            <Exam questions={this.state.examQuestionsList} />
-          ) : (
-            <div className="text-center py-5">
-              <Button
-                variant="primary"
-                onClick={() => this.getRandom32Questions(questionsList)}
-              >
-                Rozpoczniej egzamin
-              </Button>
-              <p>Tu jest info o zasadach egzaminu.</p>
-            </div>
-          )
-        ) : (
-          <SpinnerToLosExam />
-        )}
-      </MasterContainer>
-    );
-  }
-}
+  return (
+    <MasterContainer>
+      {examQuestionsList.length === 32 ? (
+        <Exam questions={examQuestionsList} />
+      ) : (
+        <>
+          {console.log("q: ", questions)}
+          <Button
+            variant="primary"
+            onClick={() => getRandom32Questions(questions)}
+          >
+            Rozpoczniej egzamin
+          </Button>
+          <p>Opis zasad egzaminu</p>
+        </>
+      )}
+    </MasterContainer>
+  );
+};
 
 export default ExamWrapper;
