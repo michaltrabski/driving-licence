@@ -1,12 +1,14 @@
 import React, { useState, useEffect, createContext } from "react";
-import ExamWrapper from "./containers/ExamWrapper";
+import ExamWrapper from "./components/ExamWrapper";
 import { questionsList as questionsListFromAssets } from "./assets/kat_b_pl";
 import "./App.css";
-export const QuestionsContext = createContext();
+import { modeType } from "./functions/functions";
+import AppWrapper from "./components/AppWrapper";
 
+export const QuestionsContext = createContext();
 const App = () => {
   const [questions, setQuestions] = useState([]);
-  const [mode, setexamMode] = useState("makeExam");
+  const [mode, setMode] = useState(modeType.modeExam);
 
   useEffect(() => {
     setTimeout(() => {
@@ -15,11 +17,15 @@ const App = () => {
   }, [questions]);
 
   return (
-    <QuestionsContext.Provider
-      value={{ questions: [...questions], setQuestions }}
-    >
-      {mode === "makeExam" && <ExamWrapper />}
-    </QuestionsContext.Provider>
+    <AppWrapper>
+      <QuestionsContext.Provider
+        value={{ questions: [...questions], setQuestions }}
+      >
+        {mode === modeType.modeExam && <ExamWrapper />}
+        {mode === modeType.modeRevievExam && "przeglądamy wyniki egzaminów"}
+        {mode === modeType.modeLearnQuestions && "uczymy sie testow"}
+      </QuestionsContext.Provider>
+    </AppWrapper>
   );
 };
 

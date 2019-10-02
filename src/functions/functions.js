@@ -1,3 +1,10 @@
+export const modeType = {
+  modeNotSelected: "modeNotSelected",
+  modeExam: "modeExam",
+  modeRevievExam: "modeRevievExam",
+  modeLearnQuestions: "modeLearnQuestions"
+};
+
 export const getQuestionType = question => {
   // return "abc" or "yesno"
   let { r: rightAnswer } = question;

@@ -2,11 +2,11 @@ import React, { useState, useContext } from "react";
 import { Button } from "react-bootstrap/";
 import _ from "lodash";
 import Exam from "./Exam";
-import MasterContainer from "./../components/spinners/MasterContainer";
+import MasterContainer from "./spinners/MasterContainer";
 import { arrWithPktToEgzam } from "../functions/functions";
-import { QuestionsContext } from "./../App";
+import { QuestionsContext } from "../App";
 
-const ExamWrapper = props => {
+const ExamWrapper = () => {
   const [examQuestionsList, setExamQuestionsList] = useState([]);
   const { questions } = useContext(QuestionsContext);
 
@@ -43,7 +43,6 @@ const ExamWrapper = props => {
         <Exam questions={examQuestionsList} />
       ) : (
         <>
-          {console.log("q: ", questions)}
           <Button
             variant="primary"
             onClick={() => getRandom32Questions(questions)}

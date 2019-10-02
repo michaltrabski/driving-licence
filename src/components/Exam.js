@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button } from "react-bootstrap/";
-import Media from "../components/Media";
-import Timer from "../components/Timer";
+import Media from "./Media";
+import Timer from "./Timer";
 import { getQuestionType } from "../functions/functions";
 
 const Exam = props => {
@@ -47,10 +47,6 @@ const Exam = props => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const nextQuestion = () => {
-    setcurrentQuestion(currentQuestion + 1);
-  };
-
   const handleMediaReady = () => {
     setTimer({ ...timer, ready: true });
   };
@@ -84,7 +80,10 @@ const Exam = props => {
               color={timer.color}
             />
             <div className="mt-auto text-right">
-              <Button variant="primary" onClick={nextQuestion}>
+              <Button
+                variant="primary"
+                onClick={() => setcurrentQuestion(currentQuestion + 1)}
+              >
                 Następne
               </Button>
             </div>
