@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button } from "react-bootstrap/";
+import { Container, Row, Col, Button, Badge } from "react-bootstrap/";
 import Media from "./Media";
 import Timer from "./Timer";
 import { getQuestionType } from "../functions/functions";
@@ -18,7 +18,7 @@ const Exam = props => {
 
   const { questions } = props;
   const question = questions[currentQuestion];
-  let { q, m, r } = question;
+  let { q, m, pkt } = question;
 
   useEffect(() => {
     let interval = null;
@@ -52,11 +52,8 @@ const Exam = props => {
   };
 
   useEffect(() => {
-    console.log(timer);
-
     let ready = false;
     let duration = getQuestionType(question) === "yesno" ? d15 : d50;
-
     setTimer({
       ...timer,
       ready,
@@ -68,18 +65,52 @@ const Exam = props => {
 
   return (
     <>
-      <Row>
+      <Row className="mt-3">
+        <Col>
+          <div className="d-flex justify-content-between align-items-center">
+            <span>
+              Wartość punktowa 3 <Badge variant="light">{pkt}</Badge>
+            </span>
+            <span>
+              Kategoria <Badge variant="light">B</Badge>
+            </span>
+            <Badge variant="light">21:32</Badge>
+            <Button variant="light" size="sm">
+              Zakończ egzamin
+            </Button>
+          </div>
+        </Col>
+      </Row>
+      <Row className="mt-3">
         <Col md={6}>
           <Media m={m} handleMediaReady={handleMediaReady} />
         </Col>
         <Col md={6}>
           <div className="d-flex flex-column h-100">
-            <Timer
-              duration={timer.duration}
-              time={timer.time}
-              color={timer.color}
-            />
-            <div className="mt-auto text-right">
+            <Container fluid>
+              <Row className="text-center">
+                <Col xs={6}>Pytania podstawowe</Col>
+                <Col xs={6}>Pytania specjalistyczne</Col>
+              </Row>
+              <Row className="text-center">
+                <Col xs={6} className="bg-light">
+                  {currentQuestion} / 20
+                </Col>
+                <Col xs={6} className="bg-light">
+                  0/20
+                </Col>
+              </Row>
+            </Container>
+
+            <div className="mt-auto">
+              <Timer
+                duration={timer.duration}
+                time={timer.time}
+                color={timer.color}
+              />
+            </div>
+
+            <div className="text-right mt-3">
               <Button
                 variant="primary"
                 onClick={() => setcurrentQuestion(currentQuestion + 1)}
@@ -91,46 +122,15 @@ const Exam = props => {
         </Col>
       </Row>
       <Row>
-        <Col className="text-center">
-          <p>{q}</p>
+        <Col className="text-center bg-light mt-3">
+          <h5 className="my-2">{q}</h5>
         </Col>
       </Row>
       <Row>
-        <Col className="text-center"></Col>
+        <Col className="text-center">Tak NIE</Col>
       </Row>
     </>
   );
 };
 
 export default Exam;
-
-// import React, { Component } from "react";
-// import { Button } from "react-bootstrap/";
-// import Media from "../components/Media";
-
-// class Exam extends Component {
-//   state = { currentQuestion: 1 };
-
-//   nextQuestion = () => {
-//     this.setState({
-//       currentQuestion: this.state.currentQuestion + 1
-//     });
-//   };
-//   render() {
-//     const { examQuestionsList } = this.props;
-//     const question = examQuestionsList[this.state.currentQuestion];
-//     const { m, q } = question;
-
-//     return (
-//       <div>
-//         <Media m={m} />
-//         <p>{q}</p>
-//         <Button variant="primary" onClick={this.nextQuestion}>
-//           Następne
-//         </Button>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Exam;
